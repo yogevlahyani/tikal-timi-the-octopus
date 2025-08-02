@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Bean, Grid2X2, Table2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import type { PaginationState, SortingState } from "@tanstack/react-table";
+import { GridView } from "./GridView";
 
 const ViewMode = {
   Table: "table",
@@ -22,7 +23,7 @@ export default function Beans() {
     pageSize: 10,
   });
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState<string>('');
+  const [globalFilter, setGlobalFilter] = useState<string>("");
   const { data, isFetching } = useQuery({
     queryKey: ["beans", pagination],
     queryFn: () =>
@@ -42,6 +43,68 @@ export default function Beans() {
   }
 
   const renderView = () => {
+    const columns = [
+      {
+        key: "ImageUrl",
+        label: "Image",
+        renderCell: (row) => (
+          <img
+            src={row.ImageUrl}
+            alt={row.FlavorName}
+            className="w-16 object-cover rounded mx-auto"
+          />
+        ),
+      },
+      {
+        key: "FlavorName",
+        label: "Name",
+      },
+      {
+        key: "Description",
+        label: "Description",
+        renderCell: (row) => (
+          <Tooltip>
+            <TooltipTrigger>
+              {row.Description?.length > 50
+                ? `${row.Description.slice(0, 50)}...`
+                : row.Description || "No description"}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{row.Description}</p>
+            </TooltipContent>
+          </Tooltip>
+        ),
+      },
+      {
+        key: "Attributes",
+        label: "Attributes",
+        renderCell: (row) => (
+          <div className="flex flex-wrap gap-1">
+            {row.GlutenFree && (
+              <span className="bg-jellybean-lime/20 text-jellybean-lime px-2 py-1 rounded">
+                Gluten Free
+              </span>
+            )}
+            {row.Kosher && (
+              <span className="bg-jellybean-sky/20 text-jellybean-sky px-2 py-1 rounded">
+                Kosher
+              </span>
+            )}
+            {row.Seasonal && (
+              <span className="bg-jellybean-lemon/20 text-jellybean-lemon px-2 py-1 rounded">
+                Seasonal
+              </span>
+            )}
+            {row.SugarFree && (
+              <span className="bg-jellybean-cherry/20 text-jellybean-cherry px-2 py-1 rounded">
+                Sugar Free
+              </span>
+            )}
+          </div>
+        ),
+      },
+    ];
+
     switch (viewMode) {
       default:
       case ViewMode.Table:
@@ -57,72 +120,26 @@ export default function Beans() {
             globalFilter={globalFilter}
             setGlobalFilter={setGlobalFilter}
             data={data.data}
-            columns={[
-              {
-                key: "ImageUrl",
-                label: "Image",
-                renderCell: (row) => (
-                  <img
-                    src={row.ImageUrl}
-                    alt={row.FlavorName}
-                    className="w-16 object-cover rounded mx-auto"
-                  />
-                ),
-              },
-              {
-                key: "FlavorName",
-                label: "Name",
-              },
-              {
-                key: "Description",
-                label: "Description",
-                renderCell: (row) => (
-                  <Tooltip>
-                    <TooltipTrigger>
-                      {row.Description?.length > 50
-                        ? `${row.Description.slice(0, 50)}...`
-                        : row.Description || "No description"}
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{row.Description}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                ),
-              },
-              {
-                key: "Attributes",
-                label: "Attributes",
-                renderCell: (row) => (
-                  <div className="flex flex-wrap gap-1">
-                    {row.GlutenFree && (
-                      <span className="bg-jellybean-lime/20 text-jellybean-lime px-2 py-1 rounded">
-                        Gluten Free
-                      </span>
-                    )}
-                    {row.Kosher && (
-                      <span className="bg-jellybean-sky/20 text-jellybean-sky px-2 py-1 rounded">
-                        Kosher
-                      </span>
-                    )}
-                    {row.Seasonal && (
-                      <span className="bg-jellybean-lemon/20 text-jellybean-lemon px-2 py-1 rounded">
-                        Seasonal
-                      </span>
-                    )}
-                    {row.SugarFree && (
-                      <span className="bg-jellybean-cherry/20 text-jellybean-cherry px-2 py-1 rounded">
-                        Sugar Free
-                      </span>
-                    )}
-                  </div>
-                ),
-              },
-            ]}
+            columns={columns}
           />
         );
 
       case ViewMode.Grid:
-        return <div>Grid View</div>;
+        return (
+          <GridView
+            rowIdKey="BeanId"
+            rowCount={data.total}
+            isFetching={isFetching}
+            pagination={pagination}
+            setPagination={setPagination}
+            sorting={sorting}
+            setSorting={setSorting}
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+            data={data.data}
+            columns={columns}
+          />
+        );
     }
   };
 
