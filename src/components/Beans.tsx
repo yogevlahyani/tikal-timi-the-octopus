@@ -34,7 +34,7 @@ export default function Beans() {
     placeholderData: (previousData) => previousData,
   });
 
-  if (!data) {
+  if (!data || isFetching) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Bean className="h-8 w-32 text-orange-500 animate-bounce" />

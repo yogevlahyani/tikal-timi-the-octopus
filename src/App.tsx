@@ -1,4 +1,4 @@
-import { AnimatePresence, LayoutGroup } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
@@ -24,36 +24,30 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  // const location = useLocation();
-
   return (
     <div className="min-h-screen bg-[url(/background.jpg)] bg-cover">
       <div className="bg-gradient-to-b from-background/20 from-0% via-background/80 via-15% to-background to-90%">
-        <LayoutGroup>
-          <AnimatePresence mode="wait">
-            <QueryErrorResetBoundary>
-              {({ reset }) => (
-                <ErrorBoundary
-                  fallbackRender={({ error, resetErrorBoundary }) => (
-                    <div>
-                      There was an error!{" "}
-                      <Button onClick={() => resetErrorBoundary()}>
-                        Try again
-                      </Button>
-                      <pre style={{ whiteSpace: "normal" }}>
-                        {error.message}
-                      </pre>
-                    </div>
-                  )}
-                  onReset={reset}
-                >
-                  <RouterProvider router={router} />
-                </ErrorBoundary>
-              )}
-            </QueryErrorResetBoundary>
-            <AnimationsToggle className="fixed bottom-4 right-4" />
-          </AnimatePresence>
-        </LayoutGroup>
+        <AnimatePresence mode="sync">
+          <QueryErrorResetBoundary>
+            {({ reset }) => (
+              <ErrorBoundary
+                fallbackRender={({ error, resetErrorBoundary }) => (
+                  <div>
+                    There was an error!{" "}
+                    <Button onClick={() => resetErrorBoundary()}>
+                      Try again
+                    </Button>
+                    <pre style={{ whiteSpace: "normal" }}>{error.message}</pre>
+                  </div>
+                )}
+                onReset={reset}
+              >
+                <RouterProvider router={router} />
+                <AnimationsToggle className="fixed bottom-4 right-4" />
+              </ErrorBoundary>
+            )}
+          </QueryErrorResetBoundary>
+        </AnimatePresence>
       </div>
     </div>
   );

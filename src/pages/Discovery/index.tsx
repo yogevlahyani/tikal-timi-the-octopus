@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import Timi from "@/components/Timi";
-import Beans from "@/components/Beans";
 import { useNavigate } from "react-router-dom";
+import Discovery from "@/components/Discovery";
 
 function DiscoveryPage() {
   const [skipAnimations] = useLocalStorage("skipAnimations", false);
@@ -23,7 +23,7 @@ function DiscoveryPage() {
         transition={skipAnimations ? { duration: 0 } : { duration: 0.5 }}
         className="flex flex-col items-center space-y-4 text-center w-full max-w-4xl mx-auto p-4 min-h-screen pt-48"
       >
-        <Beans />
+        <Discovery />
       </motion.div>
     </div>
   );

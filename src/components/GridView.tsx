@@ -18,7 +18,7 @@ interface Props {
   setSorting?: OnChangeFn<SortingState>;
   globalFilter?: string;
   setGlobalFilter?: OnChangeFn<string>;
-  data: Record<string, unknown>[];
+  data: Record<string, any>[];
   columns: {
     key: string;
     label: string;
@@ -50,7 +50,6 @@ export const GridView = ({
   const [filteredData, setFilteredData] = useState<GridItem[]>([]);
   const [sortedData, setSortedData] = useState<GridItem[]>([]);
 
-  // Transform data to grid items
   const transformDataToGridItems = useCallback(
     (rawData: Record<string, unknown>[]): GridItem[] => {
       return rawData.map((item) => ({
@@ -77,7 +76,6 @@ export const GridView = ({
     [rowIdKey]
   );
 
-  // Filter data based on global filter
   useEffect(() => {
     const gridItems = transformDataToGridItems(data);
     if (!globalFilter) {
@@ -93,7 +91,6 @@ export const GridView = ({
     setFilteredData(filtered);
   }, [data, globalFilter, transformDataToGridItems]);
 
-  // Sort data based on sorting state
   useEffect(() => {
     if (!sorting || sorting.length === 0) {
       setSortedData(filteredData);
@@ -116,7 +113,6 @@ export const GridView = ({
     setSortedData(sorted);
   }, [filteredData, sorting]);
 
-  // Handle sorting
   const handleSort = (field: string) => {
     if (!setSorting) return;
 
@@ -136,7 +132,6 @@ export const GridView = ({
     return currentSort.desc ? " ==" : " =<";
   };
 
-  // Get available sortable fields from columns
   const sortableFields = columns.map((col) => ({
     key: col.key,
     label: col.label,
@@ -144,7 +139,6 @@ export const GridView = ({
 
   return (
     <div className="space-y-4">
-      {/* Search and Sort Controls */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <Input
           value={globalFilter || ""}
@@ -171,14 +165,12 @@ export const GridView = ({
         </div>
       </div>
 
-      {/* Grid Container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {sortedData.map((item) => (
           <div
             key={item.id}
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200"
           >
-            {/* Image */}
             {item.image && (
               <div className="aspect-square overflow-hidden">
                 <img
@@ -189,9 +181,7 @@ export const GridView = ({
               </div>
             )}
 
-            {/* Content */}
             <div className="p-4 space-y-2">
-              {/* Name */}
               <h3
                 className="font-semibold text-gray-900 truncate"
                 title={item.name}
@@ -199,7 +189,6 @@ export const GridView = ({
                 {item.name}
               </h3>
 
-              {/* Description with Tooltip */}
               {item.description && (
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -213,7 +202,6 @@ export const GridView = ({
                 </Tooltip>
               )}
 
-              {/* Additional fields */}
               <div className="space-y-1">
                 {columns
                   .filter(
@@ -247,7 +235,6 @@ export const GridView = ({
         ))}
       </div>
 
-      {/* Pagination Controls */}
       <div className="flex items-center justify-between gap-4 pt-4">
         <div className="flex items-center gap-2">
           <button
@@ -350,7 +337,6 @@ export const GridView = ({
         </div>
       </div>
 
-      {/* Stats */}
       <div className="text-sm text-gray-600 text-center">
         Showing {sortedData.length.toLocaleString()} of{" "}
         {rowCount?.toLocaleString()} items

@@ -6,12 +6,10 @@ export interface Bean {
   Ingredients: string[];
   ColorGroup: string;
   ImageUrl: string;
-  Flags: {
-    GlutenFree: boolean;
-    SugarFree: boolean;
-    Seasonal: boolean;
-    Kosher: boolean;
-  };
+  GlutenFree: boolean;
+  SugarFree: boolean;
+  Seasonal: boolean;
+  Kosher: boolean;
 }
 
 export interface Color {
@@ -71,7 +69,7 @@ export class TikalApiClient {
 
   private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    
+
     const response = await fetch(url, {
       ...options,
       headers: {
@@ -89,7 +87,7 @@ export class TikalApiClient {
 
   async getBeans(params?: BeansParams): Promise<ApiResponse<Bean>> {
     const searchParams = new URLSearchParams();
-    
+
     if (params?.limit) {
       searchParams.append('limit', params.limit.toString());
     }
@@ -99,20 +97,36 @@ export class TikalApiClient {
 
     const query = searchParams.toString();
     const endpoint = `/api/beans${query ? `?${query}` : ''}`;
-    
+
     return this.request<ApiResponse<Bean>>(endpoint);
+  }
+
+  async fetchAllParallel() {
+    const PAGE_SIZE = 50;
+    const first = await this.getBeans({ limit: PAGE_SIZE, offset: 0 });
+    const total = Number(first.total);
+    const pages = Math.ceil(total / PAGE_SIZE);
+
+    const offsets = Array.from({ length: pages }, (_, i) => i * PAGE_SIZE);
+    const pagePromises = offsets.map((offset) =>
+      this.getBeans({ limit: PAGE_SIZE, offset })
+    );
+
+    const results = await Promise.all(pagePromises);
+    // Keep the original order
+    return results.flatMap((p) => p.data);
   }
 
   async getColors(params?: ColorsParams): Promise<ApiResponse<Color>> {
     const searchParams = new URLSearchParams();
-    
+
     if (params?.colorId) {
       searchParams.append('colorId', params.colorId);
     }
 
     const query = searchParams.toString();
     const endpoint = `/api/colors${query ? `?${query}` : ''}`;
-    
+
     return this.request<ApiResponse<Color>>(endpoint);
   }
 
