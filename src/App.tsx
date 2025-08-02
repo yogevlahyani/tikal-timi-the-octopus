@@ -1,9 +1,8 @@
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup } from "framer-motion";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Welcome from "./pages/Welcome";
 import AnimationsToggle from "./components/AnimationsToggle";
 import Beans from "./pages/Beans";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 function App() {
   const location = useLocation();
