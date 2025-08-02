@@ -1,4 +1,4 @@
-<div style="text-align: center; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
+<div style="text-align: center; display: flex; justify-content: center; align-items: center; margin: 0 auto; width: 100%;">
   <a href="https://tikal-timi-the-octopus.vercel.app" target="_blank">
     <img src="docs/timi.gif" alt="Timi the Octopus" width="150" />
   </a>
