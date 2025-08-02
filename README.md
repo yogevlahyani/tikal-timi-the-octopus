@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+<img src="docs/timi.gif" alt="Timi the Octopus" width="150" />
+</div>
+
 # Timi the Octopus - Jellybeans
 
 A React-based app where Timi the Octopus explores and collects jellybeans. This is a home assignment project showcasing React development with TypeScript and Vite.
