@@ -1,11 +1,12 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { tikalApi } from "@/api/tikal";
 import { useState } from "react";
 import { TableView } from "./TableView";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
-import { Grid2X2, Table2 } from "lucide-react";
+import { Bean, Grid2X2, Table2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import type { PaginationState, SortingState } from "@tanstack/react-table";
 
 const ViewMode = {
   Table: "table",
@@ -16,10 +17,27 @@ type ViewMode = (typeof ViewMode)[keyof typeof ViewMode];
 
 export default function Beans() {
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Table);
-  const { data } = useSuspenseQuery({
-    queryKey: ["beans"],
-    queryFn: () => tikalApi.getBeans({ limit: 10 }),
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
   });
+  const { data, isFetching } = useQuery({
+    queryKey: ["beans", pagination],
+    queryFn: () =>
+      tikalApi.getBeans({
+        limit: pagination.pageSize,
+        offset: pagination.pageIndex * pagination.pageSize,
+      }),
+    placeholderData: (previousData) => previousData,
+  });
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Bean className="h-8 w-32 text-orange-500 animate-bounce" />
+      </div>
+    );
+  }
 
   const renderView = () => {
     switch (viewMode) {
@@ -28,6 +46,10 @@ export default function Beans() {
         return (
           <TableView
             rowIdKey="BeanId"
+            rowCount={data.total}
+            isFetching={isFetching}
+            pagination={pagination}
+            setPagination={setPagination}
             data={data.data}
             columns={[
               {
@@ -67,22 +89,22 @@ export default function Beans() {
                 renderCell: (row) => (
                   <div className="flex flex-wrap gap-1">
                     {row.GlutenFree && (
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded">
+                      <span className="bg-jellybean-lime/20 text-jellybean-lime px-2 py-1 rounded">
                         Gluten Free
                       </span>
                     )}
                     {row.Kosher && (
-                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                      <span className="bg-jellybean-sky/20 text-jellybean-sky px-2 py-1 rounded">
                         Kosher
                       </span>
                     )}
                     {row.Seasonal && (
-                      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                      <span className="bg-jellybean-lemon/20 text-jellybean-lemon px-2 py-1 rounded">
                         Seasonal
                       </span>
                     )}
                     {row.SugarFree && (
-                      <span className="bg-red-100 text-red-800 px-2 py-1 rounded">
+                      <span className="bg-jellybean-cherry/20 text-jellybean-cherry px-2 py-1 rounded">
                         Sugar Free
                       </span>
                     )}
@@ -107,8 +129,9 @@ export default function Beans() {
         <div className="flex gap-2">
           <Button
             className={cn({
-              "bg-blue-500 text-white": viewMode === ViewMode.Table,
-              "bg-gray-200": viewMode !== ViewMode.Table,
+              "bg-primary text-primary-foreground": viewMode === ViewMode.Table,
+              "bg-secondary text-secondary-foreground":
+                viewMode !== ViewMode.Table,
             })}
             onClick={() => setViewMode(ViewMode.Table)}
           >
@@ -116,8 +139,9 @@ export default function Beans() {
           </Button>
           <Button
             className={cn({
-              "bg-blue-500 text-white": viewMode === ViewMode.Grid,
-              "bg-gray-200 text-blue-500": viewMode !== ViewMode.Grid,
+              "bg-primary text-primary-foreground": viewMode === ViewMode.Grid,
+              "bg-secondary text-secondary-foreground":
+                viewMode !== ViewMode.Grid,
             })}
             onClick={() => setViewMode(ViewMode.Grid)}
           >

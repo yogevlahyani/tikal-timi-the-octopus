@@ -1,5 +1,8 @@
 import { AnimatePresence, LayoutGroup } from "framer-motion";
-import { Routes, Route, useLocation } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router";
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
 import AnimationsToggle from "./components/AnimationsToggle";
@@ -7,12 +10,23 @@ import WelcomePage from "./pages/Welcome";
 import BeansPage from "./pages/Beans";
 import { Button } from "./components/ui/button";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    Component: WelcomePage,
+  },
+  {
+    path: "/beans",
+    Component: BeansPage,
+  },
+]);
+
 function App() {
-  const location = useLocation();
+  // const location = useLocation();
 
   return (
     <div className="min-h-screen bg-[url(/background.jpg)] bg-cover">
-      <div className="bg-linear-to-b from-gray-50/20 from-0% via-gray-50 via-15% to-gray-50 to-90%">
+      <div className="bg-gradient-to-b from-background/20 from-0% via-background/80 via-15% to-background to-90%">
         <LayoutGroup>
           <AnimatePresence mode="wait">
             <QueryErrorResetBoundary>
@@ -31,10 +45,7 @@ function App() {
                   )}
                   onReset={reset}
                 >
-                  <Routes location={location} key={location.pathname}>
-                    <Route path="/" element={<WelcomePage />} />
-                    <Route path="/beans" element={<BeansPage />} />
-                  </Routes>
+                  <RouterProvider router={router} />
                 </ErrorBoundary>
               )}
             </QueryErrorResetBoundary>

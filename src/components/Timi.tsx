@@ -7,7 +7,12 @@ interface Props {
 
 export default function Timi({ className }: Props) {
   return (
-    <motion.div layoutId="timi" initial={false} className={className}>
+    <motion.div
+      layoutId="timi"
+      initial={false}
+      transition={{ duration: 1 }}
+      className={className}
+    >
       <DotLottieReact src="/timi.lottie" loop autoplay />
     </motion.div>
   );
