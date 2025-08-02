@@ -52,7 +52,9 @@ export default function Recommendations() {
         .map((combo) => ({
           ...combo,
           matchPercentage:
-            combo.TagSerialized.split(",").length / preferredBeans.length,
+            combo.TagSerialized.split(",").filter((bean) =>
+              beans.some((b) => b.FlavorName === bean)
+            ).length / preferredBeans.length,
         }))
         .sort((a, b) => b.matchPercentage - a.matchPercentage),
   });
@@ -126,7 +128,11 @@ export default function Recommendations() {
   return (
     <div className="flex flex-col w-full gap-8">
       <div className="fixed bottom-12 right-18 z-10">
-        <ComboLottery combinations={combinations} beans={beans} columns={columns} />
+        <ComboLottery
+          combinations={combinations}
+          beans={beans}
+          columns={columns}
+        />
       </div>
       <GridView
         rowIdKey="BeanId"
@@ -145,11 +151,11 @@ export default function Recommendations() {
                   {combo.Name}{" "}
                   <span
                     className={cn("text-xs text-gray-500", {
-                      "text-red-500": combo.matchPercentage <= 0.3,
+                      "text-red-500": combo.matchPercentage <= 0.2,
                       "text-yellow-500":
-                        combo.matchPercentage > 0.3 &&
-                        combo.matchPercentage < 0.75,
-                      "text-green-500": combo.matchPercentage >= 0.75,
+                        combo.matchPercentage > 0.2 &&
+                        combo.matchPercentage < 0.4,
+                      "text-green-500": combo.matchPercentage >= 0.4,
                     })}
                   >
                     ({(combo.matchPercentage * 100).toFixed(0)}% match)
