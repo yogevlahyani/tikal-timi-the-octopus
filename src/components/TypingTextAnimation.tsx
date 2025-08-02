@@ -20,8 +20,16 @@ export default function TypingTextAnimation({
           key={index}
           initial={skipAnimations ? {} : { opacity: 0, y: 100 }}
           animate={skipAnimations ? {} : { opacity: 1, y: 0 }}
-          exit={skipAnimations ? {} : { opacity: 0, y: -100 }}
-          transition={skipAnimations ? { duration: 0 } : { duration: 0.5, delay: index * 0.05 + delay }}
+          exit={
+            skipAnimations
+              ? {}
+              : { opacity: 0, y: -100, transition: { delay: 0 } }
+          }
+          transition={
+            skipAnimations
+              ? { duration: 0 }
+              : { duration: 0.5, delay: index * 0.05 + delay }
+          }
         >
           {char}
         </motion.span>

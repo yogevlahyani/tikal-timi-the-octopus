@@ -1,12 +1,15 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { motion } from "framer-motion";
-import TypingTextAnimation from "../components/TypingTextAnimation";
+import TypingTextAnimation from "../../components/TypingTextAnimation";
 import { Button } from "@/components/ui/button";
 import { Bean, Glasses, HelpingHand } from "lucide-react";
 import { useLocalStorage } from "@uidotdev/usehooks";
+import { useNavigate } from "react-router-dom";
+import Timi from "@/components/Timi";
 
 function Welcome() {
   const [skipAnimations] = useLocalStorage("skipAnimations", false);
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -30,22 +33,21 @@ function Welcome() {
           skipAnimations={skipAnimations}
         />
       </motion.div>
-      <motion.div
-        initial={skipAnimations ? {} : { opacity: 0, y: -100 }}
-        animate={skipAnimations ? {} : { opacity: 1, y: 0 }}
-        exit={skipAnimations ? {} : { y: -50, scale: 0.5, x: -50 }}
-        transition={skipAnimations ? { duration: 0 } : { duration: 0.5 }}
-      >
-        <DotLottieReact src="/timi.lottie" loop autoplay themeId="orange" />
-      </motion.div>
+      <Timi className="h-64" />
       <motion.div
         className="flex flex-row gap-4"
         initial={skipAnimations ? {} : { opacity: 0, y: -50 }}
         animate={skipAnimations ? {} : { opacity: 1, y: 0 }}
-        exit={skipAnimations ? {} : { opacity: 0, y: -50 }}
-        transition={skipAnimations ? { duration: 0 } : { duration: 0.5, delay: 5 }}
+        exit={
+          skipAnimations
+            ? {}
+            : { opacity: 0, y: -50, transition: { duration: 0.5 } }
+        }
+        transition={
+          skipAnimations ? { duration: 0 } : { duration: 0.5, delay: 5 }
+        }
       >
-        <Button variant="default">
+        <Button variant="default" onClick={() => navigate("/beans")}>
           <Bean /> Show me the beans!
         </Button>
         <Button variant="outline">
