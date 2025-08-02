@@ -1,4 +1,4 @@
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { tikalApi } from "@/api/tikal";
 import { useState } from "react";
 import { TableView } from "./TableView";
@@ -21,6 +21,8 @@ export default function Beans() {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = useState<string>('');
   const { data, isFetching } = useQuery({
     queryKey: ["beans", pagination],
     queryFn: () =>
@@ -50,6 +52,10 @@ export default function Beans() {
             isFetching={isFetching}
             pagination={pagination}
             setPagination={setPagination}
+            sorting={sorting}
+            setSorting={setSorting}
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
             data={data.data}
             columns={[
               {

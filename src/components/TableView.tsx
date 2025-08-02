@@ -2,11 +2,15 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
   useReactTable,
   type OnChangeFn,
   type PaginationState,
+  type SortingState,
 } from "@tanstack/react-table";
 import { Bean } from "lucide-react";
+import { Input } from "./ui/input";
 
 interface Props {
   rowIdKey?: string;
@@ -14,6 +18,10 @@ interface Props {
   isFetching?: boolean;
   pagination: PaginationState;
   setPagination: OnChangeFn<PaginationState>;
+  sorting?: SortingState;
+  setSorting?: OnChangeFn<SortingState>;
+  globalFilter?: string;
+  setGlobalFilter?: OnChangeFn<string>;
   data: Record<string, any>[];
   columns: {
     key: string;
@@ -30,6 +38,10 @@ export const TableView = ({
   isFetching,
   pagination,
   setPagination,
+  sorting,
+  setSorting,
+  globalFilter,
+  setGlobalFilter,
   data,
   columns,
 }: Props) => {
@@ -40,20 +52,34 @@ export const TableView = ({
         header: () => col.label,
         cell: (info) =>
           col.renderCell ? col.renderCell(info.row.original) : info.getValue(),
+        enableSorting: true,
       })
     ),
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     getRowId: (originalRow) => originalRow[rowIdKey],
     manualPagination: true,
     rowCount,
     state: {
       pagination,
+      sorting,
+      globalFilter: globalFilter || "",
     },
     onPaginationChange: setPagination,
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
   });
 
   return (
     <>
+      <div>
+        <Input
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter?.(String(e.target.value))}
+          placeholder="Search..."
+        />
+      </div>
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -63,12 +89,34 @@ export const TableView = ({
                   key={header.id}
                   className="p-2 first:rounded-s-full last:rounded-e-full"
                 >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
+                  {header.isPlaceholder ? null : (
+                    <div
+                      className={
+                        header.column.getCanSort()
+                          ? "cursor-pointer select-none"
+                          : ""
+                      }
+                      onClick={header.column.getToggleSortingHandler()}
+                      title={
+                        header.column.getCanSort()
+                          ? header.column.getNextSortingOrder() === "asc"
+                            ? "Sort ascending"
+                            : header.column.getNextSortingOrder() === "desc"
+                            ? "Sort descending"
+                            : "Clear sort"
+                          : undefined
+                      }
+                    >
+                      {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
                       )}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
