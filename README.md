@@ -1,8 +1,12 @@
-<div style="text-align: center;">
-<img src="docs/timi.gif" alt="Timi the Octopus" width="150" />
+<div style="text-align: center; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+  <a href="https://tikal-timi-the-octopus.vercel.app" target="_blank">
+    <img src="docs/timi.gif" alt="Timi the Octopus" width="150" />
+  </a>
 </div>
 
 # Timi the Octopus - Jellybeans
+
+![Vercel Deploy](https://deploy-badge.vercel.app/vercel/tikal-timi-the-octopus?style=for-the-badge&name=tikal)
 
 A React-based app where Timi the Octopus explores and collects jellybeans. This is a home assignment project showcasing React development with TypeScript and Vite.
 
