@@ -1,14 +1,16 @@
-import viteLogo from "/vite.svg";
+import { AnimatePresence } from "framer-motion";
+import { Routes, Route, useLocation } from "react-router-dom";
+import Welcome from "./pages/Welcome";
 
 function App() {
+  const location = useLocation();
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="flex flex-col items-center">
-        <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-      </div>
-    </div>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Welcome />} />
+      </Routes>
+    </AnimatePresence>
   );
 }
 
