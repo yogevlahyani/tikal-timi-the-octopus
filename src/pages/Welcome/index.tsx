@@ -1,4 +1,3 @@
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { motion } from "framer-motion";
 import TypingTextAnimation from "../../components/TypingTextAnimation";
 import { Button } from "@/components/ui/button";
@@ -7,7 +6,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { useNavigate } from "react-router-dom";
 import Timi from "@/components/Timi";
 
-function Welcome() {
+function WelcomePage() {
   const [skipAnimations] = useLocalStorage("skipAnimations", false);
   const navigate = useNavigate();
 
@@ -61,4 +60,4 @@ function Welcome() {
   );
 }
 
-export default Welcome;
+export default WelcomePage;
