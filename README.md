@@ -1,4 +1,15 @@
-<iframe src="https://lottie.host/embed/d737594a-795d-4cf1-8d6a-746cbf99cdd3/1GYzi4I4jg.lottie"></iframe>
+<script
+  src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
+  type="module"
+></script>
+
+<dotlottie-wc
+  src="https://lottie.host/d737594a-795d-4cf1-8d6a-746cbf99cdd3/1GYzi4I4jg.lottie"
+  style="width: 300px;height: 300px"
+  speed="1"
+  autoplay
+  loop
+></dotlottie-wc>
 
 # Timi the Octopus - Jellybeans
 
