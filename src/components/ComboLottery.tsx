@@ -88,12 +88,12 @@ export default function ComboLottery({ combinations, beans, columns }: Props) {
               {randomCombination?.matchPercentage && (
                 <span
                   className={cn("text-xs text-gray-500", {
-                    "text-red-500": randomCombination?.matchPercentage <= 0.2,
+                    "text-red-500": randomCombination?.matchPercentage <= 0.1,
                     "text-yellow-500":
-                      randomCombination?.matchPercentage > 0.2 &&
-                      randomCombination?.matchPercentage < 0.4,
+                      randomCombination?.matchPercentage > 0.1 &&
+                      randomCombination?.matchPercentage < 0.3,
                     "text-green-500":
-                      randomCombination?.matchPercentage >= 0.4,
+                      randomCombination?.matchPercentage >= 0.3,
                   })}
                 >
                   ({(randomCombination?.matchPercentage * 100).toFixed(0)}%

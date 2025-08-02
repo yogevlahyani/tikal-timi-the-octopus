@@ -46,15 +46,15 @@ export default function Recommendations() {
       data
         .filter((combo) =>
           combo.TagSerialized.split(",").some((bean) =>
-            beans.some((b) => b.FlavorName === bean)
+            preferredBeans.some((b) => b.FlavorName === bean)
           )
         )
         .map((combo) => ({
           ...combo,
           matchPercentage:
-            combo.TagSerialized.split(",").filter((bean) =>
-              beans.some((b) => b.FlavorName === bean)
-            ).length / preferredBeans.length,
+            combo.TagSerialized.split(",")
+              .map((bean) => preferredBeans.find((b) => b.FlavorName === bean))
+              .filter(Boolean).length / preferredBeans.length,
         }))
         .sort((a, b) => b.matchPercentage - a.matchPercentage),
   });
@@ -151,11 +151,11 @@ export default function Recommendations() {
                   {combo.Name}{" "}
                   <span
                     className={cn("text-xs text-gray-500", {
-                      "text-red-500": combo.matchPercentage <= 0.2,
+                      "text-red-500": combo.matchPercentage <= 0.1,
                       "text-yellow-500":
-                        combo.matchPercentage > 0.2 &&
-                        combo.matchPercentage < 0.4,
-                      "text-green-500": combo.matchPercentage >= 0.4,
+                        combo.matchPercentage > 0.1 &&
+                        combo.matchPercentage < 0.3,
+                      "text-green-500": combo.matchPercentage >= 0.3,
                     })}
                   >
                     ({(combo.matchPercentage * 100).toFixed(0)}% match)
