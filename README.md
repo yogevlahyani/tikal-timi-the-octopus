@@ -1,7 +1,5 @@
 # Timi the Octopus - Jellybeans
 
-<iframe src="https://lottie.host/embed/d737594a-795d-4cf1-8d6a-746cbf99cdd3/1GYzi4I4jg.lottie"></iframe>
-
 A React-based app where Timi the Octopus explores and collects jellybeans. This is a home assignment project showcasing React development with TypeScript and Vite.
 
 🐙 **[Live Demo](https://tikal-timi-the-octopus.vercel.app)**
