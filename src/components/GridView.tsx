@@ -22,7 +22,7 @@ interface Props {
   columns: {
     key: string;
     label: string;
-    renderCell?: (row: Record<string, unknown>) => React.ReactNode;
+    renderCell?: (row: Record<string, any>) => React.ReactNode;
   }[];
 }
 
