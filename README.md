@@ -22,8 +22,8 @@ A React-based app where Timi the Octopus explores and collects jellybeans. This 
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd timi-jellybeans
+git clone git@github.com:yogevlahyani/tikal-timi-the-octopus.git
+cd tikal-timi-the-octopus
 ```
 
 2. Install dependencies:
