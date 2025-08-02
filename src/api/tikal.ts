@@ -21,7 +21,7 @@ export interface Color {
 export interface Combination {
   CombinationId: number;
   Name: string;
-  TagSerialized: string[];
+  TagSerialized: string;
 }
 
 export interface ApiResponse<T> {

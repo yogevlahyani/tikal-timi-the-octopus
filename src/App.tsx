@@ -7,6 +7,7 @@ import WelcomePage from "./pages/Welcome";
 import BeansPage from "./pages/Beans";
 import { Button } from "./components/ui/button";
 import DiscoveryPage from "./pages/Discovery";
+import SuggestionsPage from "./pages/Suggestions";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +20,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/discovery",
-    Component: DiscoveryPage, // Assuming DiscoveryPage is similar to BeansPage
+    Component: DiscoveryPage,
   },
+  {
+    path: "/suggestions",
+    Component: SuggestionsPage,
+  }
 ]);
 
 function App() {

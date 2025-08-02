@@ -52,7 +52,7 @@ function WelcomePage() {
         <Button variant="outline" onClick={() => navigate("/discovery")}>
           <Glasses /> Beans Discovery
         </Button>
-        <Button variant="default">
+        <Button variant="default" onClick={() => navigate("/suggestions")}>
           <HelpingHand /> Help Feed Timi
         </Button>
       </motion.div>

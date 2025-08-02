@@ -5,7 +5,7 @@ import { Bean } from "lucide-react";
 
 export default function Discovery() {
   const { data, isLoading, isError } = useSuspenseQuery({
-    queryKey: ["beans-attributes"],
+    queryKey: ["all-beans"],
     queryFn: () => tikalApi.fetchAllParallel(),
     select: (data) =>
       data.reduce(

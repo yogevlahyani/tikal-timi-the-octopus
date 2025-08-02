@@ -12,8 +12,8 @@ interface Props {
   rowIdKey?: string;
   rowCount: number;
   isFetching?: boolean;
-  pagination: PaginationState;
-  setPagination: OnChangeFn<PaginationState>;
+  pagination?: PaginationState;
+  setPagination?: OnChangeFn<PaginationState>;
   sorting?: SortingState;
   setSorting?: OnChangeFn<SortingState>;
   globalFilter?: string;
@@ -140,29 +140,33 @@ export const GridView = ({
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <Input
-          value={globalFilter || ""}
-          onChange={(e) => setGlobalFilter?.(String(e.target.value))}
-          placeholder="Search..."
-          className="max-w-sm"
-        />
+        {globalFilter && setGlobalFilter && (
+          <Input
+            value={globalFilter || ""}
+            onChange={(e) => setGlobalFilter?.(String(e.target.value))}
+            placeholder="Search..."
+            className="max-w-sm"
+          />
+        )}
 
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Sort by:</span>
-          <select
-            className="border rounded px-2 py-1 text-sm"
-            onChange={(e) => e.target.value && handleSort(e.target.value)}
-            value={sorting?.[0]?.id || ""}
-          >
-            <option value="">None</option>
-            {sortableFields.map((field) => (
-              <option key={field.key} value={field.key}>
-                {field.label}
-                {getSortIcon(field.key)}
-              </option>
-            ))}
-          </select>
-        </div>
+        {sorting && setSorting && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Sort by:</span>
+            <select
+              className="border rounded px-2 py-1 text-sm"
+              onChange={(e) => e.target.value && handleSort(e.target.value)}
+              value={sorting?.[0]?.id || ""}
+            >
+              <option value="">None</option>
+              {sortableFields.map((field) => (
+                <option key={field.key} value={field.key}>
+                  {field.label}
+                  {getSortIcon(field.key)}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -235,112 +239,121 @@ export const GridView = ({
         ))}
       </div>
 
-      <div className="flex items-center justify-between gap-4 pt-4">
-        <div className="flex items-center gap-2">
-          <button
-            className="border rounded p-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            onClick={() =>
-              setPagination({ pageIndex: 0, pageSize: pagination.pageSize })
-            }
-            disabled={pagination.pageIndex === 0}
-          >
-            {"<<"}
-          </button>
-          <button
-            className="border rounded p-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            onClick={() =>
-              setPagination({
-                pageIndex: pagination.pageIndex - 1,
-                pageSize: pagination.pageSize,
-              })
-            }
-            disabled={pagination.pageIndex === 0}
-          >
-            {"<"}
-          </button>
-          <button
-            className="border rounded p-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            onClick={() =>
-              setPagination({
-                pageIndex: pagination.pageIndex + 1,
-                pageSize: pagination.pageSize,
-              })
-            }
-            disabled={
-              pagination.pageIndex >=
-              Math.ceil(rowCount / pagination.pageSize) - 1
-            }
-          >
-            {">"}
-          </button>
-          <button
-            className="border rounded p-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            onClick={() =>
-              setPagination({
-                pageIndex: Math.ceil(rowCount / pagination.pageSize) - 1,
-                pageSize: pagination.pageSize,
-              })
-            }
-            disabled={
-              pagination.pageIndex >=
-              Math.ceil(rowCount / pagination.pageSize) - 1
-            }
-          >
-            {">>"}
-          </button>
-        </div>
+      {pagination && setPagination && (
+        <>
+          <div className="flex items-center justify-between gap-4 pt-4">
+            <div className="flex items-center gap-2">
+              <button
+                className="border rounded p-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                onClick={() =>
+                  setPagination({ pageIndex: 0, pageSize: pagination.pageSize })
+                }
+                disabled={pagination.pageIndex === 0}
+              >
+                {"<<"}
+              </button>
+              <button
+                className="border rounded p-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                onClick={() =>
+                  setPagination({
+                    pageIndex: pagination.pageIndex - 1,
+                    pageSize: pagination.pageSize,
+                  })
+                }
+                disabled={pagination.pageIndex === 0}
+              >
+                {"<"}
+              </button>
+              <button
+                className="border rounded p-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                onClick={() =>
+                  setPagination({
+                    pageIndex: pagination.pageIndex + 1,
+                    pageSize: pagination.pageSize,
+                  })
+                }
+                disabled={
+                  pagination.pageIndex >=
+                  Math.ceil(rowCount / pagination.pageSize) - 1
+                }
+              >
+                {">"}
+              </button>
+              <button
+                className="border rounded p-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                onClick={() =>
+                  setPagination({
+                    pageIndex: Math.ceil(rowCount / pagination.pageSize) - 1,
+                    pageSize: pagination.pageSize,
+                  })
+                }
+                disabled={
+                  pagination.pageIndex >=
+                  Math.ceil(rowCount / pagination.pageSize) - 1
+                }
+              >
+                {">>"}
+              </button>
+            </div>
 
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1 text-sm">
-            <div>Page</div>
-            <strong>
-              {pagination.pageIndex + 1} of{" "}
-              {Math.ceil(rowCount / pagination.pageSize).toLocaleString()}
-            </strong>
-          </span>
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1 text-sm">
+                <div>Page</div>
+                <strong>
+                  {pagination.pageIndex + 1} of{" "}
+                  {Math.ceil(rowCount / pagination.pageSize).toLocaleString()}
+                </strong>
+              </span>
 
-          <span className="flex items-center gap-1 text-sm">
-            | Go to page:
-            <input
-              type="number"
-              min="1"
-              max={Math.ceil(rowCount / pagination.pageSize)}
-              defaultValue={pagination.pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                setPagination({
-                  pageIndex: page,
-                  pageSize: pagination.pageSize,
-                });
-              }}
-              className="border p-1 rounded w-16 text-center"
-            />
-          </span>
+              <span className="flex items-center gap-1 text-sm">
+                | Go to page:
+                <input
+                  type="number"
+                  min="1"
+                  max={Math.ceil(rowCount / pagination.pageSize)}
+                  defaultValue={pagination.pageIndex + 1}
+                  onChange={(e) => {
+                    const page = e.target.value
+                      ? Number(e.target.value) - 1
+                      : 0;
+                    setPagination({
+                      pageIndex: page,
+                      pageSize: pagination.pageSize,
+                    });
+                  }}
+                  className="border p-1 rounded w-16 text-center"
+                />
+              </span>
 
-          <select
-            value={pagination.pageSize}
-            onChange={(e) => {
-              setPagination({ pageIndex: 0, pageSize: Number(e.target.value) });
-            }}
-            className="border rounded px-2 py-1 text-sm"
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select>
+              <select
+                value={pagination.pageSize}
+                onChange={(e) => {
+                  setPagination({
+                    pageIndex: 0,
+                    pageSize: Number(e.target.value),
+                  });
+                }}
+                className="border rounded px-2 py-1 text-sm"
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    Show {pageSize}
+                  </option>
+                ))}
+              </select>
 
-          {isFetching && (
-            <Bean className="h-6 w-6 text-orange-500 animate-bounce" />
-          )}
-        </div>
-      </div>
+              {isFetching && (
+                <Bean className="h-6 w-6 text-orange-500 animate-bounce" />
+              )}
+            </div>
+          </div>
 
-      <div className="text-sm text-gray-600 text-center">
-        Showing {sortedData.length.toLocaleString()} of{" "}
-        {rowCount?.toLocaleString()} items
-      </div>
+          <div className="text-sm text-gray-600 text-center">
+            Showing {sortedData.length.toLocaleString()} of{" "}
+            {rowCount?.toLocaleString()} items
+          </div>
+        </>
+      )}
     </div>
   );
 };
