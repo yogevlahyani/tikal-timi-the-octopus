@@ -4,7 +4,7 @@ import Timi from "@/components/Timi";
 import Beans from "@/components/Beans";
 import { useNavigate } from "react-router-dom";
 
-function BeansPage() {
+function DiscoveryPage() {
   const [skipAnimations] = useLocalStorage("skipAnimations", false);
   const navigate = useNavigate();
 
@@ -29,4 +29,4 @@ function BeansPage() {
   );
 }
 
-export default BeansPage;
+export default DiscoveryPage;

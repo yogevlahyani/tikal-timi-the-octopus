@@ -49,7 +49,7 @@ function WelcomePage() {
         <Button variant="default" onClick={() => navigate("/beans")}>
           <Bean /> Show me the beans!
         </Button>
-        <Button variant="outline">
+        <Button variant="outline" onClick={() => navigate("/discovery")}>
           <Glasses /> Beans Discovery
         </Button>
         <Button variant="default">

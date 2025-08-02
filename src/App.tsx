@@ -1,14 +1,12 @@
 import { AnimatePresence, LayoutGroup } from "framer-motion";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
 import AnimationsToggle from "./components/AnimationsToggle";
 import WelcomePage from "./pages/Welcome";
 import BeansPage from "./pages/Beans";
 import { Button } from "./components/ui/button";
+import DiscoveryPage from "./pages/Discovery";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "/beans",
     Component: BeansPage,
+  },
+  {
+    path: "/discovery",
+    Component: DiscoveryPage, // Assuming DiscoveryPage is similar to BeansPage
   },
 ]);
 
