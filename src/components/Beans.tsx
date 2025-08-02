@@ -4,7 +4,7 @@ import { useState } from "react";
 import { TableView } from "./TableView";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
-import { Bean, Grid2X2, Table2 } from "lucide-react";
+import { BeanIcon, Grid2X2, Table2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import type { PaginationState, SortingState } from "@tanstack/react-table";
 import { GridView } from "./GridView";
@@ -37,7 +37,7 @@ export default function Beans() {
   if (!data || isFetching) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Bean className="h-8 w-32 text-orange-500 animate-bounce" />
+        <BeanIcon className="h-8 w-32 text-orange-500 animate-bounce" />
       </div>
     );
   }
@@ -47,7 +47,7 @@ export default function Beans() {
       {
         key: "ImageUrl",
         label: "Image",
-        renderCell: (row) => (
+        renderCell: (row: Record<string, any>) => (
           <img
             src={row.ImageUrl}
             alt={row.FlavorName}
@@ -62,7 +62,7 @@ export default function Beans() {
       {
         key: "Description",
         label: "Description",
-        renderCell: (row) => (
+        renderCell: (row: Record<string, any>) => (
           <Tooltip>
             <TooltipTrigger>
               {row.Description?.length > 50
@@ -78,7 +78,7 @@ export default function Beans() {
       {
         key: "Attributes",
         label: "Attributes",
-        renderCell: (row) => (
+        renderCell: (row: Record<string, any>) => (
           <div className="flex flex-wrap gap-1">
             {row.GlutenFree && (
               <span className="bg-jellybean-lime/20 text-jellybean-lime px-2 py-1 rounded">
